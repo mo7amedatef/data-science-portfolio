@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- START: PERSONALIZATION -->
+    <title>MOHAMED ATEF | Data Scientist Portfolio</title>
+    <!-- END: PERSONALIZATION -->
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* ==================================== */
+        /* === CSS STYLES (Equivalent to styles.css) === */
+        /* ==================================== */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111111; /* Black/Dark Charcoal Background */
+            color: #D1D5DB; /* Light Gray Text */
+            
+            /* --- Enable Scroll Snap (PowerPoint Slide Effect) --- */
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+            height: 100vh;
+            text-align: left;
+        }
+        
+        section {
+            scroll-snap-align: start; /* Snap to the start of each section */
+            min-height: 100vh; /* Ensure each section takes full viewport height */
+            padding: 4rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        /* Style for the fixed header */
+        header {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        /* Smooth scrolling behavior for anchor links */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Utility for handling potential large images gracefully */
+        .project-img {
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        /* --- DYNAMIC MOTION STYLES (Main Section Reveal) --- */
+        /* Initial state (hidden and moved down for main sections) */
+        .scroll-hidden {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1.0s ease-out, transform 1.0s ease-out;
+        }
+        /* Final state (fully visible and back to original position) */
+        .scroll-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- STAGGERED MOTION STYLES (Inner Element Reveal) --- */
+        /* Initial state (hidden and moved down for staggered inner items) */
+        .stagger-hidden {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        /* Final state (fully visible and back to original position) */
+        .stagger-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-[#111111]" dir="ltr">
+
+    <!-- ==================================== -->
+    <!-- === HTML STRUCTURE (index.html) === -->
+    <!-- ==================================== -->
+    
+    <!-- Fixed Header / Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full bg-[#111111]/95 backdrop-blur-sm z-50 transition duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center" dir="ltr">
+            <!-- YOUR NAME HERE -->
+            <a href="#home" class="text-2xl font-bold text-[#D1D5DB] tracking-wider hover:text-white transition duration-300">MOHAMED ATEF</a>
+            
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex space-x-8">
+                <a href="#about" class="text-[#D1D5DB] hover:text-white transition duration-300 font-medium">About Me</a>
+                <a href="#skills" class="text-[#D1D5DB] hover:text-white transition duration-300 font-medium">Skills</a>
+                <a href="#projects" class="text-[#D1D5DB] hover:text-white transition duration-300 font-medium">Projects</a>
+                <a href="#contact" class="text-[#D1D5DB] hover:text-white transition duration-300 font-medium">Contact</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-[#D1D5DB] hover:bg-[#222222] focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-[#111111] border-t border-[#333333] absolute w-full" dir="ltr">
+            <a href="#about" class="block py-3 px-6 text-[#D1D5DB] hover:bg-[#222222] transition duration-300 font-medium" onclick="toggleMenu()">About Me</a>
+            <a href="#skills" class="block py-3 px-6 text-[#D1D5DB] hover:bg-[#222222] transition duration-300 font-medium" onclick="toggleMenu()">Skills</a>
+            <a href="#projects" class="block py-3 px-6 text-[#D1D5DB] hover:bg-[#222222] transition duration-300 font-medium" onclick="toggleMenu()">Projects</a>
+            <a href="#contact" class="block py-3 px-6 text-[#D1D5DB] hover:bg-[#222222] transition duration-300 font-medium" onclick="toggleMenu()">Contact</a>
+        </div>
+    </header>
+
+    <!-- Image Fullscreen Modal (Lightbox) -->
+    <div id="image-modal" class="fixed inset-0 bg-black bg-opacity-90 z-[100] hidden flex justify-center items-center p-4 transition-opacity duration-300 opacity-0">
+        <div class="relative max-w-4xl max-h-[90vh]">
+            <img id="modal-image" src="" alt="Mohamed Atef Profile Picture - Full Screen" class="w-full h-full object-contain rounded-lg">
+            <!-- Close button for the modal -->
+            <button id="close-modal" class="absolute top-4 right-4 text-white text-3xl font-bold bg-gray-800/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-700 transition">
+                &times; 
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto">
+        
+        <!-- 1. HERO SECTION (Always visible) -->
+        <section id="home" class="pt-24 text-center">
+            <div class="space-y-6">
+                <p class="text-xl text-[#9CA3AF] font-light">Hello, I'm</p>
+                <!-- YOUR NAME HERE -->
+                <h1 class="text-6xl sm:text-7xl lg:text-8xl font-extrabold text-white tracking-tight leading-none">
+                    MOHAMED ATEF
+                </h1>
+                <!-- YOUR TITLE HERE -->
+                <p class="text-2xl sm:text-3xl font-semibold text-[#9CA3AF]">
+                    Data Scientist & AI Specialist
+                </p>
+                <div class="pt-8">
+                    <a href="#projects" class="inline-block px-8 py-3 bg-white text-black font-bold rounded-full shadow-lg hover:shadow-white/50 hover:bg-gray-100 transition duration-300 transform hover:scale-105">
+                        View My Work
+                    </a>
+                    <a href="#contact" class="inline-block ml-4 px-8 py-3 border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition duration-300 transform hover:scale-105">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ABOUT SECTION (Scroll Animated) -->
+        <section id="about" class="pt-24 scroll-hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-2 border-b-4 border-white inline-block pb-1">About Me</h2>
+                <p class="text-lg text-[#9CA3AF] mt-4">A brief story of my professional journey.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center gap-12 p-8 bg-[#222222] rounded-xl shadow-2xl" dir="ltr">
+                <!-- START: YOUR PROFILE PICTURE HERE - NOW CLICKABLE -->
+                <div class="flex-shrink-0 cursor-pointer transition duration-300 hover:scale-[1.05]" id="profile-picture-container">
+                    <!-- IMAGE SOURCE REVERTED TO RELIABLE GITHUB RAW LINK -->
+                    <img 
+                        src="https://raw.githubusercontent.com/mo7amedatef/data-science-portfolio/master/IMG_20251004_02.jpg" 
+                        alt="Mohamed Atef Profile Picture" 
+                        class="w-64 h-64 rounded-full border-4 border-white object-cover mx-auto"
+                        onerror="this.onerror=null; this.src='https://placehold.co/250x250/222222/FFFFFF?text=MA+Photo+Missing';"
+                    >
+                </div>
+                <!-- END: YOUR PROFILE PICTURE HERE -->
+                
+                <!-- START: YOUR CUSTOM BIO TEXT HERE -->
+                <div class="text-left space-y-4">
+                    <!-- Updated Sub-Heading -->
+                    <h3 class="text-2xl font-semibold text-white">Engineering Robust, Scalable AI Solutions</h3>
+                    
+                    <!-- Updated Bio Paragraph 1 -->
+                    <p class="text-[#D1D5DB]">
+                        I don't just analyze data; I engineer intelligence. As a dedicated Machine Learning Engineer and Data Scientist, my work is focused on creating robust, scalable AI solutions that cut through the noise. Whether it's optimizing supply chains with predictive modeling, or enhancing customer experience through NLP, my goal is always the same: to deliver an ROI through algorithmic efficiency.
+                    </p>
+                    
+                    <!-- Updated Bio Paragraph 2 -->
+                    <p class="text-[#D1D5DB]">
+                        I specialize in bridging the gap between theoretical models and real-world deployment, ensuring that every project is not just academically sound but operationally effective.
+                    </p>
+                </div>
+                <!-- END: YOUR CUSTOM BIO TEXT HERE -->
+            </div>
+        </section>
+        
+        <!-- 3. SKILLS SECTION (Scroll Animated + Staggered Inner Elements) -->
+        <section id="skills" class="pt-24 scroll-hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-2 border-b-4 border-white inline-block pb-1">Technical Skills</h2>
+                <!-- Removed: (Customize these 6 cards!) -->
+                <p class="text-lg text-[#9CA3AF] mt-4">The tools and technologies I use daily.</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 p-8 bg-[#222222] rounded-xl shadow-2xl" dir="ltr">
+                <!-- START: CUSTOMIZED SKILLS LIST (7 ITEMS) -->
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="Python Icon">🐍</span>
+                    <p class="font-semibold text-[#D1D5DB]">Python</p>
+                </div>
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="SQL Icon">⚙️</span>
+                    <p class="font-semibold text-[#D1D5DB]">SQL</p>
+                </div>
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="Power BI Icon">📊</span>
+                    <p class="font-semibold text-[#D1D5DB]">Power BI</p>
+                </div>
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="Scikit-learn Icon">🧪</span>
+                    <p class="font-semibold text-[#D1D5DB]">Scikit-learn</p>
+                </div>
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="TensorFlow Icon">🧠</span>
+                    <p class="font-semibold text-[#D1D5DB]">TensorFlow</p>
+                </div>
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="NLP/LLMs Icon">💬</span>
+                    <p class="font-semibold text-[#D1D5DB]">NLP/LLMs</p>
+                </div>
+                <div class="text-center p-4 bg-[#111111] rounded-lg shadow-xl border border-white/30 hover:shadow-2xl hover:border-white transition duration-300 transform hover:scale-105 stagger-hidden">
+                    <span class="text-4xl mb-2 block text-white" role="img" aria-label="Flask Icon">💻</span>
+                    <p class="font-semibold text-[#D1D5DB]">Flask</p>
+                </div>
+                <!-- END: CUSTOMIZED SKILLS LIST -->
+            </div>
+        </section>
+
+        <!-- 4. PROJECTS SECTION (Scroll Animated + Staggered Inner Elements) -->
+        <section id="projects" class="pt-24 scroll-hidden">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-2 border-b-4 border-white inline-block pb-1">Featured Projects</h2>
+                <p class="text-lg text-[#9CA3AF] mt-4">Showcasing my best work and case studies. (Update details and links below!)</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12" dir="ltr">
+                <!-- START: PROJECT 1 -->
+                <div class="bg-[#222222] rounded-xl overflow-hidden shadow-2xl hover:shadow-white/20 transition duration-500 transform hover:-translate-y-1 stagger-hidden">
+                    <img 
+                        src="https://placehold.co/800x450/222222/FFFFFF?text=Project+1+Image" 
+                        alt="Financial Forecasting Model" 
+                        class="w-full project-img"
+                        onerror="this.onerror=null; this.src='https://placehold.co/800x450/222222/FFFFFF?text=Project+1';"
+                    >
+                    <div class="p-6 space-y-4 text-left">
+                        <!-- Placeholder Title -->
+                        <h3 class="text-2xl font-bold text-white">Financial Forecasting Model</h3>
+                        <!-- Placeholder Description -->
+                        <p class="text-[#9CA3AF]">Built a Deep Learning (LSTM) model for predicting stock/currency prices with up to 88% accuracy. Used Time Series analysis and integrated multi-source data.</p>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-white/10 text-white px-3 py-1 rounded-full font-semibold">Deep Learning</span>
+                            <span class="bg-white/10 text-white px-3 py-1 rounded-full font-semibold">Python</span>
+                            <span class="bg-white/10 text-white px-3 py-1 rounded-full font-semibold">Time Series</span>
+                        </div>
+                        <!-- Placeholder Link -->
+                        <a href="YOUR_PROJECT_GITHUB_LINK_OR_CASE_STUDY" target="_blank" class="inline-block text-white hover:text-[#9CA3AF] font-semibold transition duration-300">
+                            View Analysis & Code &rarr;
+                        </a>
+                    </div>
+                </div>
+                <!-- END: PROJECT 1 -->
+
+                <!-- START: PROJECT 2 -->
+                <div class="bg-[#222222] rounded-xl overflow-hidden shadow-2xl hover:shadow-white/20 transition duration-500 transform hover:-translate-y-1 stagger-hidden">
+                    <img 
+                        src="https://placehold.co/800x450/222222/FFFFFF?text=Project+2+Image" 
+                        alt="Sentiment Analysis System" 
+                        class="w-full project-img"
+                        onerror="this.onerror=null; this.src='https://placehold.co/800x450/222222/FFFFFF?text=Project+2';"
+                    >
+                    <div class="p-6 space-y-4 text-left">
+                         <!-- Placeholder Title -->
+                        <h3 class="text-2xl font-bold text-white">Customer Sentiment Analysis System (NLP)</h3>
+                        <!-- Placeholder Description -->
+                        <p class="text-[#9CA3AF]">Implemented a full-stack Natural Language Processing system to analyze thousands of customer reviews and extract sentiment (positive/negative). Utilized Hugging Face and Transformer models.</p>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="bg-white/10 text-white px-3 py-1 rounded-full font-semibold">NLP</span>
+                            <span class="bg-white/10 text-white px-3 py-1 rounded-full font-semibold">PyTorch</span>
+                            <span class="bg-white/10 text-white px-3 py-1 rounded-full font-semibold">Hugging Face</span>
+                        </div>
+                        <!-- Placeholder Link -->
+                        <a href="YOUR_PROJECT_GITHUB_LINK_OR_CASE_STUDY" target="_blank" class="inline-block text-white hover:text-[#9CA3AF] font-semibold transition duration-300">
+                            View Case Study &rarr;
+                        </a>
+                    </div>
+                </div>
+                <!-- END: PROJECT 2 -->
+            </div>
+        </section>
+
+        <!-- 5. CONTACT SECTION (Scroll Animated) -->
+        <section id="contact" class="pt-24 min-h-screen flex items-center justify-center scroll-hidden">
+            <div class="w-full max-w-xl p-8 bg-[#222222] rounded-xl shadow-2xl text-center">
+                <h2 class="text-4xl font-bold text-white mb-2 border-b-4 border-white inline-block pb-1">Get In Touch</h2>
+                
+                <!-- START: UPDATED CONTACT CTA -->
+                <p class="text-lg text-[#9CA3AF] mt-4 mb-8">
+                    Ready to discuss an AI project or career opportunity? The best way to reach me is directly through my **LinkedIn** profile.
+                </p>
+
+                <div class="mb-8">
+                    <!-- Prominent Button linking directly to LinkedIn -->
+                    <a href="https://linkedin.com/in/mohamed-atef-527b652a3" target="_blank" class="w-full py-3 inline-block bg-white text-black font-bold rounded-lg shadow-lg hover:bg-gray-100 transition duration-300 transform hover:scale-[1.01]">
+                        Message Me on LinkedIn
+                    </a>
+                </div>
+                <!-- END: UPDATED CONTACT CTA -->
+
+                <!-- START: NEW DIRECT CONTACT INFO -->
+                <div class="mt-4 mb-8 space-y-3 p-4 bg-[#111111] rounded-lg border border-white/10">
+                    <div class="flex items-center justify-center space-x-2 text-white">
+                        <span class="text-xl">📞</span>
+                        <a href="tel:01023501606" class="text-lg hover:text-[#D1D5DB] transition duration-200" dir="ltr">01023501606</a>
+                    </div>
+                    <div class="flex items-center justify-center space-x-2 text-white">
+                        <span class="text-xl">📧</span>
+                        <a href="mailto:mohamedatefsallam7@gmail.com" class="text-lg hover:text-[#D1D5DB] transition duration-200" dir="ltr">mohamedatefsallam7@gmail.com</a>
+                    </div>
+                </div>
+                <!-- END: NEW DIRECT CONTACT INFO -->
+
+
+                <div class="mt-8 pt-6 border-t border-[#333333]">
+                    <!-- TEXT CHANGED HERE -->
+                    <p class="text-white font-semibold">Connect Me</p>
+                    <div class="flex justify-center space-x-6 mt-4 text-2xl">
+                        <!-- LinkedIn Icon (Kept for consistency) -->
+                        <a href="https://linkedin.com/in/mohamed-atef-527b652a3" target="_blank" class="text-[#9CA3AF] hover:text-white transition duration-300" aria-label="LinkedIn">
+                            <!-- LinkedIn Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.308-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                        </a>
+                        <a href="https://github.com/mo7amedatef" target="_blank" class="text-[#9CA3AF] hover:text-white transition duration-300" aria-label="GitHub">
+                            <!-- GitHub Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.332 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.085-.747.082-.731.082-.731 1.205.086 1.838 1.238 1.838 1.238 1.07 1.835 2.809 1.305 3.493.998.108-.77.419-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23a11.974 11.974 0 0 1 3-.408c1.011 0 2.02.136 3 .408 2.292-1.552 3.3-1.23 3.3-1.23.653 1.652.242 2.873.118 3.176.766.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576c4.767-1.589 8.203-6.057 8.203-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </a>
+                        <!-- END: UPDATED SOCIAL LINKS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#111111] text-center p-6 border-t border-[#333333]">
+        <p class="text-[#9CA3AF] text-sm">
+            &copy; <span id="current-year"></span> MOHAMED ATEF. All rights reserved.
+        </p>
+    </footer>
+
+    <!-- ==================================== -->
+    <!-- === JAVASCRIPT LOGIC (script.js) === -->
+    <!-- ==================================== -->
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle Logic
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function toggleMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        mobileMenuButton.addEventListener('click', toggleMenu);
+
+        // Close mobile menu when a link is clicked (for smoother navigation)
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (!mobileMenu.classList.contains('hidden')) {
+                    toggleMenu();
+                }
+            });
+        });
+
+        /* --- DYNAMIC MOTION: INTERSECTION OBSERVER FOR SCROLL REVEAL AND STAGGERING --- */
+        
+        // Define options for the observer
+        const observerOptions = {
+            root: null, // relative to the viewport
+            rootMargin: '0px',
+            threshold: 0.2 // Trigger when 20% of the element is visible
+        };
+
+        // Callback function executed when an element intersects the viewport
+        const observerCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                // 1. Logic for when the element enters the viewport (Show)
+                if (entry.isIntersecting) {
+                    
+                    // Show animation for the main section
+                    entry.target.classList.add('scroll-visible');
+                    entry.target.classList.remove('scroll-hidden');
+
+                    // Show animation for staggered items
+                    const staggeredItems = entry.target.querySelectorAll('.stagger-hidden');
+                    const staggerIncrement = 100; // 100ms delay between each inner item
+                    const sectionDelay = 100; // Delay for snappier reveal
+                    
+                    staggeredItems.forEach((item, index) => {
+                        // Use a timeout to apply 'stagger-visible' class after a cumulative delay
+                        setTimeout(() => {
+                            item.classList.add('stagger-visible');
+                            item.classList.remove('stagger-hidden');
+                        }, sectionDelay + (index * staggerIncrement));
+                    });
+                    
+                } else {
+                    // 2. Logic for when the element leaves the viewport (Hide/Reset)
+                    
+                    // Reset the main section state to hidden (ready to animate on re-entry)
+                    entry.target.classList.remove('scroll-visible');
+                    entry.target.classList.add('scroll-hidden');
+
+                    // Reset staggered items immediately when the section hides
+                    const staggeredItems = entry.target.querySelectorAll('.stagger-visible');
+                    staggeredItems.forEach(item => {
+                        item.classList.remove('stagger-visible');
+                        item.classList.add('stagger-hidden');
+                    });
+                }
+            });
+        };
+
+        // Create a new observer instance
+        const scrollObserver = new IntersectionObserver(observerCallback, observerOptions);
+
+        // Find all sections that should be animated
+        const animatedElements = document.querySelectorAll('.scroll-hidden');
+        
+        // Start observing each animated section (No longer using unobserve)
+        animatedElements.forEach(el => {
+            scrollObserver.observe(el);
+        });
+
+        /* --- NEW MODAL LOGIC FOR PROFILE PICTURE --- */
+        const profilePictureContainer = document.getElementById('profile-picture-container');
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeModalButton = document.getElementById('close-modal');
+        const profileImg = profilePictureContainer.querySelector('img');
+        
+        // Ensure image source is correctly grabbed from the profile picture
+        // We ensure profileImgSrc is updated to the correct source for the modal
+        const profileImgSrc = profileImg ? profileImg.src : "https://raw.githubusercontent.com/mo7amedatef/data-science-portfolio/master/IMG_20251004_02.jpg"; 
+        
+        // Function to open the modal
+        function openModal() {
+            // Use the hardcoded source to ensure modal opens correctly even if the initial image fails
+            modalImage.src = "https://raw.githubusercontent.com/mo7amedatef/data-science-portfolio/master/IMG_20251004_02.jpg"; 
+            modal.classList.remove('hidden');
+            // Animate opacity in
+            requestAnimationFrame(() => {
+                modal.style.opacity = '1';
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        }
+        
+        // Function to close the modal
+        function closeModal() {
+            modal.style.opacity = '0';
+            document.body.style.overflow = 'scroll'; // Re-enable background scrolling
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modalImage.src = ''; // Clear image source
+            }, 300); // Duration matches CSS transition
+        }
+
+        // Event Listeners
+        if (profilePictureContainer) {
+            profilePictureContainer.addEventListener('click', openModal);
+        }
+        
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', closeModal);
+        }
+        
+        // Close modal when clicking the dark overlay area
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+        }
+        
+        // Close modal on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+        /* --- END NEW MODAL LOGIC --- */
+
+    </script>
+</body>
+</html>
